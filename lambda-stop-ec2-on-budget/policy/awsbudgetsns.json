@@ -1,0 +1,46 @@
+{
+  "Version": "2008-10-17",
+  "Id": "__default_policy_ID",
+  "Statement": [
+    {
+      "Sid": "__default_statement_ID",
+      "Effect": "Allow",
+      "Principal": {
+        "AWS": "*"
+      },
+      "Action": [
+        "SNS:Publish",
+        "SNS:RemovePermission",
+        "SNS:SetTopicAttributes",
+        "SNS:DeleteTopic",
+        "SNS:ListSubscriptionsByTopic",
+        "SNS:GetTopicAttributes",
+        "SNS:AddPermission",
+        "SNS:Subscribe"
+      ],
+      "Resource": "arn:aws:sns:<region>:<account-id>:<topic-name>",
+      "Condition": {
+        "StringEquals": {
+          "AWS:SourceOwner": "<account-id>"
+        }
+      }
+    },
+    {
+      "Sid": "AWSBudgetsSNSPublishingPermissions",
+      "Effect": "Allow",
+      "Principal": {
+        "Service": "budgets.amazonaws.com"
+      },
+      "Action": "SNS:Publish",
+      "Resource": "arn:aws:sns:<region>:<account-id>:<topic-name>",
+      "Condition": {
+        "StringEquals": {
+          "aws:SourceAccount": "<account-id>"
+        },
+        "ArnLike": {
+          "aws:SourceArn": "arn:aws:budgets:<region>:<account-id>:*"
+        }
+      }
+    }
+  ]
+}
